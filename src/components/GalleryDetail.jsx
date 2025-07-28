@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
+import { getAssetUrl } from '../utils/assets'
 
 const GalleryDetail = () => {
   const { slug } = useParams()
@@ -14,7 +15,7 @@ const GalleryDetail = () => {
         setLoading(true)
         setError(null)
         
-        const response = await fetch(`/markdown/gallery/${slug}.md`)
+        const response = await fetch(getAssetUrl(`/markdown/gallery/${slug}.md`))
         if (!response.ok) {
           throw new Error('갤러리 내용을 찾을 수 없습니다.')
         }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getAssetUrl } from '../utils/assets'
 
 const Gallery = () => {
   const [galleries, setGalleries] = useState([])
@@ -40,7 +41,7 @@ const Gallery = () => {
         let galleryFiles = []
         
         try {
-          const fileListResponse = await fetch('/data/gallery-files.json')
+          const fileListResponse = await fetch(getAssetUrl('/data/gallery-files.json'))
           if (fileListResponse.ok) {
             const fileListData = await fileListResponse.json()
             galleryFiles = fileListData.galleries || []
@@ -64,7 +65,7 @@ const Gallery = () => {
         
         for (const fileName of galleryFiles) {
           try {
-            const response = await fetch(`/markdown/gallery/${fileName}.md`)
+            const response = await fetch(getAssetUrl(`/markdown/gallery/${fileName}.md`))
             if (!response.ok) {
               console.warn(`갤러리 파일을 불러올 수 없습니다: ${fileName}`)
               continue

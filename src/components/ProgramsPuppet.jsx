@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Markdown from './Markdown'
+import { getAssetUrl } from '../utils/assets'
 
 const ProgramsPuppet = () => {
   const [content, setContent] = useState('')
@@ -12,7 +13,7 @@ const ProgramsPuppet = () => {
         setLoading(true)
         setError(null)
         
-        const response = await fetch('/markdown/programs/puppet.md')
+        const response = await fetch(getAssetUrl('/markdown/programs/puppet.md'))
         if (!response.ok) {
           throw new Error('인형극 프로그램 페이지를 불러올 수 없습니다.')
         }

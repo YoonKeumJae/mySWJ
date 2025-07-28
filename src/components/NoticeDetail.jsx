@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
+import { getAssetUrl } from '../utils/assets'
 
 const NoticeDetail = () => {
   const { slug } = useParams()
@@ -14,7 +15,7 @@ const NoticeDetail = () => {
         setLoading(true)
         setError(null)
         
-        const response = await fetch(`/markdown/notice/${slug}.md`)
+        const response = await fetch(getAssetUrl(`/markdown/notice/${slug}.md`))
         if (!response.ok) {
           throw new Error('공지사항을 찾을 수 없습니다.')
         }

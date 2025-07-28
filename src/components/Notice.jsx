@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getAssetUrl } from '../utils/assets'
 
 const Notice = () => {
   const [notices, setNotices] = useState([])
@@ -40,7 +41,7 @@ const Notice = () => {
         let noticeFiles = []
         
         try {
-          const fileListResponse = await fetch('/data/notice-files.json')
+          const fileListResponse = await fetch(getAssetUrl('/data/notice-files.json'))
           if (fileListResponse.ok) {
             const fileListData = await fileListResponse.json()
             noticeFiles = fileListData.notices || []
@@ -64,7 +65,7 @@ const Notice = () => {
         
         for (const fileName of noticeFiles) {
           try {
-            const response = await fetch(`/markdown/notice/${fileName}.md`)
+            const response = await fetch(getAssetUrl(`/markdown/notice/${fileName}.md`))
             if (!response.ok) {
               console.warn(`파일을 불러올 수 없습니다: ${fileName}`)
               continue

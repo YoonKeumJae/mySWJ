@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { getAssetUrl } from '../utils/assets'
 
 const Home = () => {
   const [notices, setNotices] = useState([])
@@ -13,7 +14,7 @@ const Home = () => {
         setLoading(true)
         setError(null)
         
-        const response = await fetch('/data/content-metadata.json')
+        const response = await fetch(getAssetUrl('/data/content-metadata.json'))
         if (!response.ok) {
           throw new Error('콘텐츠 데이터를 불러올 수 없습니다.')
         }
@@ -65,7 +66,7 @@ const Home = () => {
         {/* <h1 className="text-5xl font-bold text-gray-800 mb-6">
           소우주에 오신 것을 환영합니다
         </h1> */}
-        <img src='/sowoojoo.png' alt='sowoojoo logo' className='h-30'></img>
+        <img src={getAssetUrl('/sowoojoo.png')} alt='sowoojoo logo' className='h-30'></img>
         <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
           소중한 우리 몸의 주인은 바로 나! 소우주에 오신 것을 환영합니다. 
         </p>

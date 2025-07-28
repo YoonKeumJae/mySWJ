@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Markdown from './Markdown'
+import { getAssetUrl } from '../utils/assets'
 
 const AboutHistory = () => {
   const [content, setContent] = useState('')
@@ -12,7 +13,7 @@ const AboutHistory = () => {
         setLoading(true)
         setError(null)
         
-        const response = await fetch('/markdown/about/history.md')
+        const response = await fetch(getAssetUrl('/markdown/about/history.md'))
         if (!response.ok) {
           throw new Error('연혁 페이지를 불러올 수 없습니다.')
         }

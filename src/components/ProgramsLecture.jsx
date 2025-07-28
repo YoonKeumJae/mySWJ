@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Markdown from './Markdown'
+import { getAssetUrl } from '../utils/assets'
 
 const ProgramsLecture = () => {
   const [content, setContent] = useState('')
@@ -12,7 +13,7 @@ const ProgramsLecture = () => {
         setLoading(true)
         setError(null)
         
-        const response = await fetch('/markdown/programs/lecture.md')
+        const response = await fetch(getAssetUrl('/markdown/programs/lecture.md'))
         if (!response.ok) {
           throw new Error('강의 프로그램 페이지를 불러올 수 없습니다.')
         }

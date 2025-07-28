@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Markdown from './Markdown';
 import {APIProvider, Map, AdvancedMarker, Pin} from '@vis.gl/react-google-maps';
+import { getAssetUrl } from '../utils/assets'
 
 
 const MapPage = () => {
@@ -14,7 +15,7 @@ const MapPage = () => {
         setLoading(true)
         setError(null)
         
-        const response = await fetch('/markdown/map/map.md')
+        const response = await fetch(getAssetUrl('/markdown/map/map.md'))
         if (!response.ok) {
           throw new Error('찾아오는 길 페이지를 불러올 수 없습니다.')
         }
