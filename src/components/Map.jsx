@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
-import ReactMarkdown from 'react-markdown'
+import Markdown from './Markdown';
+import {APIProvider, Map, AdvancedMarker, Pin} from '@vis.gl/react-google-maps';
 
-const Map = () => {
+
+const MapPage = () => {
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -45,23 +47,28 @@ const Map = () => {
     )
   }
 
+  const location = { lat: 35.846239, lng: 128.595696 };
+
   return (
     <div className="max-w-6xl mx-auto">
-      {/* 지도 영역 (실제로는 Google Maps나 Naver Maps API 사용) */}
       <div className="mb-8 bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">🗺️</div>
-          <p className="text-gray-600">여기에 실제 지도가 표시됩니다</p>
-          <p className="text-sm text-gray-500 mt-2">
-            (Google Maps, Naver Maps, Kakao Maps API 연동 필요)
-          </p>
-        </div>
+        <APIProvider apiKey={'AIzaSyAHsSkpAlmj1TPLUyIRASxXEYo-04WAUy8'} onLoad={() => console.log('Maps API has loaded.')}>
+            <Map
+                defaultZoom={13}
+                defaultCenter={ location }
+                mapId={'9b0b608a739877ad1c7022ca'}
+                >
+                <AdvancedMarker position={location}>
+                    <Pin></Pin>
+                </AdvancedMarker>
+            </Map>
+        </APIProvider>
       </div>
 
       {/* 마크다운 콘텐츠 */}
       <article className="bg-white rounded-lg border border-gray-200 p-8">
         <div className="prose prose-lg max-w-none prose-headings:text-gray-800 prose-p:text-gray-600 prose-table:text-sm">
-          <ReactMarkdown>{content}</ReactMarkdown>
+          <Markdown>{content}</Markdown>
         </div>
       </article>
 
@@ -81,15 +88,10 @@ const Map = () => {
           <p className="text-sm text-gray-600 mt-1">24시간 접수</p>
         </div>
         
-        <div className="bg-purple-50 rounded-lg p-6 text-center">
-          <div className="text-3xl mb-3">🅿️</div>
-          <h3 className="font-semibold text-gray-800 mb-2">주차 안내</h3>
-          <p className="text-purple-600 font-medium">지하 1-3층</p>
-          <p className="text-sm text-gray-600 mt-1">방문객 2시간 무료</p>
-        </div>
+        
       </div>
     </div>
   )
 }
 
-export default Map
+export default MapPage;

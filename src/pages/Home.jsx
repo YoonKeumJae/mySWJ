@@ -4,13 +4,13 @@ const Home = () => {
   return (
     <div className="max-w-6xl mx-auto">
       {/* 메인 히어로 섹션 */}
-      <section className="text-center py-16">
-        <h1 className="text-5xl font-bold text-gray-800 mb-6">
-          문화센터에 오신 것을 환영합니다
-        </h1>
+      <section className="text-center py-16 flex flex-col items-center">
+        {/* <h1 className="text-5xl font-bold text-gray-800 mb-6">
+          소우주에 오신 것을 환영합니다
+        </h1> */}
+        <img src='/sowoojoo.png' alt='sowoojoo logo' className='h-30'></img>
         <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          다양한 문화 프로그램과 창작 활동을 통해 여러분의 꿈을 키워나가세요.
-          전문 강사진과 함께하는 특별한 경험이 기다립니다.
+          소중한 우리 몸의 주인은 바로 나! 소우주에 오신 것을 환영합니다. 
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link 
@@ -77,7 +77,7 @@ const Home = () => {
           </div>
           <h3 className="text-xl font-semibold text-gray-800 mb-3">인형극</h3>
           <p className="text-gray-600 mb-4">
-            전문 인형극단의 공연과 함께하는 특별한 문화 체험을 경험해보세요.
+            인형극 공연과 함께하는 특별한 체험을 경험해보세요.
           </p>
           <Link 
             to="/programs/puppet"
@@ -101,7 +101,7 @@ const Home = () => {
             <h3 className="text-xl font-semibold text-gray-800">갤러리</h3>
           </div>
           <p className="text-gray-600 mb-4">
-            다양한 전시회와 작품들을 감상하며 문화적 영감을 받아보세요.
+            프로그램 활동 모습과 소중한 추억들을 담은 사진들을 확인해보세요.
           </p>
           <Link 
             to="/gallery"
@@ -123,7 +123,7 @@ const Home = () => {
             <h3 className="text-xl font-semibold text-gray-800">찾아오는 길</h3>
           </div>
           <p className="text-gray-600 mb-4">
-            문화센터까지의 상세한 교통안내와 주차 정보를 확인하세요.
+            소우주로 오는 길을 확인해보세요.
           </p>
           <Link 
             to="/map"
