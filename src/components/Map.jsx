@@ -77,14 +77,14 @@ const MapPage = () => {
         <div className="bg-blue-50 rounded-lg p-6 text-center">
           <div className="text-3xl mb-3">📞</div>
           <h3 className="font-semibold text-gray-800 mb-2">전화 문의</h3>
-          <p className="text-blue-600 font-medium">02-1234-5682</p>
+          <p className="text-blue-600 font-medium">053-653-0057 </p>
           <p className="text-sm text-gray-600 mt-1">평일 09:00-18:00</p>
         </div>
         
         <div className="bg-green-50 rounded-lg p-6 text-center">
           <div className="text-3xl mb-3">📧</div>
           <h3 className="font-semibold text-gray-800 mb-2">이메일</h3>
-          <p className="text-green-600 font-medium">info@company.com</p>
+          <p className="text-green-600 font-medium">swjcenter@hanmail.net</p>
           <p className="text-sm text-gray-600 mt-1">24시간 접수</p>
         </div>
         

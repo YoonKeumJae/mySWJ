@@ -3,49 +3,117 @@ import { Link } from 'react-router-dom'
 
 const Gallery = () => {
   const [galleries, setGalleries] = useState([])
+  const [frontMatters, setFrontMatters] = useState([]) // 프론트매터 상태 관리
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    // 실제 프로젝트에서는 API나 파일 시스템에서 목록을 가져와야 합니다
-    // 여기서는 하드코딩된 목록을 사용합니다
-    const mockGalleries = [
-      {
-        slug: 'spring-exhibition-2024',
-        title: '2024년 봄 전시회',
-        excerpt: '새로운 시작, 봄의 이야기를 주제로 한 특별 전시회',
-        date: '2024-03-15',
-        endDate: '2024-05-15',
-        category: '특별전시',
-        visitors: '15,847명',
-        image: '/images/gallery/spring-2024-thumb.jpg'
-      },
-      {
-        slug: 'summer-workshop-2024',
-        title: '여름 워크숍 작품 전시',
-        excerpt: '2024년 여름 워크숍 참가자들의 창작 작품 결과전',
-        date: '2024-07-01',
-        endDate: '2024-08-31',
-        category: '워크숍',
-        visitors: '8,234명',
-        image: '/images/gallery/workshop-2024-thumb.jpg'
-      },
-      {
-        slug: 'youth-art-contest-2024',
-        title: '청소년 미술 대회',
-        excerpt: '꿈을 그리다 - 제5회 청소년 미술 대회 수상작 전시',
-        date: '2024-09-14',
-        endDate: '2024-10-15',
-        category: '대회',
-        visitors: '12,456명',
-        image: '/images/gallery/youth-contest-2024-thumb.jpg'
+  // Front Matter를 파싱하는 함수
+  const parseFrontMatter = (content) => {
+    const frontMatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/
+    const match = content.match(frontMatterRegex)
+    
+    if (!match) {
+      return { frontMatter: {}, content }
+    }
+    
+    const [, yamlContent, markdownContent] = match
+    const frontMatter = {}
+    
+    // 간단한 YAML 파싱 (key: "value" 형태)
+    yamlContent.split('\n').forEach(line => {
+      const colonIndex = line.indexOf(':')
+      if (colonIndex > 0) {
+        const key = line.substring(0, colonIndex).trim()
+        const value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '')
+        frontMatter[key] = value
       }
-    ]
+    })
+    
+    return { frontMatter, content: markdownContent }
+  }
 
-    // 로딩 시뮬레이션
-    setTimeout(() => {
-      setGalleries(mockGalleries)
-      setLoading(false)
-    }, 500)
+  useEffect(() => {
+    const loadGalleries = async () => {
+      try {
+        setLoading(true)
+        
+        // 빌드 시 생성된 갤러리 파일 목록 가져오기
+        let galleryFiles = []
+        
+        try {
+          const fileListResponse = await fetch('/data/gallery-files.json')
+          if (fileListResponse.ok) {
+            const fileListData = await fileListResponse.json()
+            galleryFiles = fileListData.galleries || []
+            console.log('🖼️ 빌드 시 생성된 갤러리 파일 목록:', galleryFiles)
+          } else {
+            throw new Error('갤러리 파일 목록을 불러올 수 없습니다.')
+          }
+        } catch (error) {
+          // 빌드 시 생성된 파일이 없으면 기본 목록 사용
+          console.warn('빌드된 갤러리 파일 목록이 없어 기본 목록 사용:', error.message)
+          galleryFiles = [
+            'spring-exhibition-2024',
+            'summer-workshop-2024',
+            'youth-art-contest-2024'
+          ]
+        }
+        
+        // 각 파일에서 프론트매터 추출
+        const frontMatterList = []
+        const galleryList = []
+        
+        for (const fileName of galleryFiles) {
+          try {
+            const response = await fetch(`/markdown/gallery/${fileName}.md`)
+            if (!response.ok) {
+              console.warn(`갤러리 파일을 불러올 수 없습니다: ${fileName}`)
+              continue
+            }
+            
+            const content = await response.text()
+            const { frontMatter } = parseFrontMatter(content)
+            
+            // 프론트매터 리스트에 추가
+            frontMatterList.push({
+              fileName,
+              ...frontMatter
+            })
+            
+            // 갤러리 리스트 생성
+            const gallery = {
+              slug: fileName,
+              title: frontMatter.title || '제목 없음',
+              excerpt: frontMatter.excerpt || '내용이 없습니다.',
+              date: frontMatter.date || '날짜 없음',
+              endDate: frontMatter.endDate || frontMatter.date || '날짜 없음',
+              category: frontMatter.category || '일반',
+              visitors: frontMatter.visitors || '방문자 정보 없음',
+              image: frontMatter.image || '/images/gallery/default-thumb.jpg'
+            }
+            
+            galleryList.push(gallery)
+          } catch (err) {
+            console.error(`갤러리 파일 로딩 실패: ${fileName}`, err)
+          }
+        }
+        
+        // 프론트매터 상태 업데이트
+        setFrontMatters(frontMatterList)
+        
+        // 날짜순으로 정렬하여 갤러리 상태 업데이트
+        const sortedGalleries = galleryList.sort((a, b) => new Date(b.date) - new Date(a.date))
+        setGalleries(sortedGalleries)
+        
+      } catch (err) {
+        console.error('갤러리 로딩 실패:', err)
+        setGalleries([])
+        setFrontMatters([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadGalleries()
   }, [])
 
   if (loading) {
@@ -140,29 +208,6 @@ const Gallery = () => {
           <div className="text-gray-500 mb-4">등록된 갤러리가 없습니다.</div>
         </div>
       )}
-
-      {/* 하단 정보 */}
-      <div className="mt-16 bg-gray-50 rounded-lg p-8">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-4">갤러리 이용 안내</h3>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-medium text-gray-800 mb-2">관람 시간</h4>
-            <ul className="text-gray-600 space-y-1">
-              <li>• 평일: 09:00 - 18:00</li>
-              <li>• 주말: 10:00 - 17:00</li>
-              <li>• 휴관일: 매주 월요일, 공휴일</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium text-gray-800 mb-2">관람료</h4>
-            <ul className="text-gray-600 space-y-1">
-              <li>• 성인: 5,000원</li>
-              <li>• 청소년/학생: 3,000원</li>
-              <li>• 어린이/시니어: 2,000원</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

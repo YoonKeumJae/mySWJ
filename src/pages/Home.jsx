@@ -1,6 +1,63 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 const Home = () => {
+  const [notices, setNotices] = useState([])
+  const [galleries, setGalleries] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const loadContentData = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        const response = await fetch('/data/content-metadata.json')
+        if (!response.ok) {
+          throw new Error('콘텐츠 데이터를 불러올 수 없습니다.')
+        }
+        
+        const data = await response.json()
+        
+        // 날짜순으로 정렬 (최신순)
+        const sortedNotices = data.notices.sort((a, b) => new Date(b.date) - new Date(a.date))
+        const sortedGalleries = data.galleries.sort((a, b) => new Date(b.date) - new Date(a.date))
+        
+        setNotices(sortedNotices.slice(0, 2)) // 최신 2개만
+        setGalleries(sortedGalleries.slice(0, 2)) // 최신 2개만
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadContentData()
+  }, [])
+
+  // 카테고리별 색상 매핑
+  const getCategoryColor = (category) => {
+    const colorMap = {
+      '시스템': 'bg-red-100 text-red-800',
+      '업데이트': 'bg-blue-100 text-blue-800',
+      '정책': 'bg-gray-100 text-gray-800',
+      '대회': 'bg-green-100 text-green-800',
+      '워크숍': 'bg-blue-100 text-blue-800',
+      '전시': 'bg-purple-100 text-purple-800'
+    }
+    return colorMap[category] || 'bg-gray-100 text-gray-800'
+  }
+
+  // 날짜 포맷팅
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    })
+  }
   return (
     <div className="max-w-6xl mx-auto">
       {/* 메인 히어로 섹션 */}
@@ -132,80 +189,7 @@ const Home = () => {
             길찾기 정보 →
           </Link>
         </div>
-      </section>
-
-      {/* 최신 공지사항 및 갤러리 미리보기 */}
-      <section className="grid md:grid-cols-2 gap-8 py-16">
-        {/* 최신 공지사항 */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800">최신 공지사항</h2>
-            <Link 
-              to="/notice"
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              전체 보기 →
-            </Link>
-          </div>
-          
-          <div className="space-y-3">
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <div>
-                <h3 className="font-medium text-gray-800 text-sm">시스템 정기 점검 안내</h3>
-                <p className="text-xs text-gray-500">2024-02-10</p>
-              </div>
-              <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
-                시스템
-              </span>
-            </div>
-            
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <div>
-                <h3 className="font-medium text-gray-800 text-sm">새로운 기능 업데이트</h3>
-                <p className="text-xs text-gray-500">2024-02-05</p>
-              </div>
-              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                업데이트
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 최신 갤러리 */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800">최신 갤러리</h2>
-            <Link 
-              to="/gallery"
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              전체 보기 →
-            </Link>
-          </div>
-          
-          <div className="space-y-3">
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <div>
-                <h3 className="font-medium text-gray-800 text-sm">청소년 미술 대회</h3>
-                <p className="text-xs text-gray-500">2024-09-14</p>
-              </div>
-              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                대회
-              </span>
-            </div>
-            
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <div>
-                <h3 className="font-medium text-gray-800 text-sm">여름 워크숍 작품전</h3>
-                <p className="text-xs text-gray-500">2024-07-01</p>
-              </div>
-              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                워크숍
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
+      </section>      
     </div>
   )
 }

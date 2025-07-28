@@ -1,11 +1,8 @@
 ---
 title: "여름 워크숍 작품 전시"
 date: "2024-07-01"
-endDate: "2024-08-31"
 category: "워크숍"
 excerpt: "2024년 여름 워크숍 참가자들의 창작 작품을 선보이는 특별 전시입니다."
-visitors: "8,234명"
-image: "/images/gallery/workshop-2024-thumb.jpg"
 ---
 
 # 여름 워크숍 작품 전시

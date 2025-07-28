@@ -1,3 +1,13 @@
+---
+title: "2024년 봄 전시회"
+date: "2024-03-15"
+endDate: "2024-05-15"
+category: "특별전시"
+excerpt: "새로운 시작, 봄의 이야기를 주제로 한 특별 전시회"
+visitors: "15,847명"
+image: "/images/gallery/spring-2024-thumb.jpg"
+---
+
 # 2024년 봄 전시회
 
 ![2024년 봄 전시회 메인 포스터](/images/gallery/spring-2024-main.jpg "2024년 봄 전시회")

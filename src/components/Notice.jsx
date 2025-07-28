@@ -3,40 +3,114 @@ import { Link } from 'react-router-dom'
 
 const Notice = () => {
   const [notices, setNotices] = useState([])
+  const [frontMatters, setFrontMatters] = useState([]) // 프론트매터 상태 관리
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    // 실제 프로젝트에서는 API나 파일 시스템에서 목록을 가져와야 합니다
-    // 여기서는 하드코딩된 목록을 사용합니다
-    const mockNotices = [
-      {
-        slug: 'system-maintenance',
-        title: '시스템 정기 점검 안내',
-        excerpt: '2024년 2월 15일 정기 점검이 예정되어 있습니다.',
-        date: '2024-02-10',
-        category: '시스템'
-      },
-      {
-        slug: 'new-features',
-        title: '새로운 기능 업데이트 출시',
-        excerpt: '다크모드, 실시간 알림 등 다양한 신기능이 추가되었습니다.',
-        date: '2024-02-05',
-        category: '업데이트'
-      },
-      {
-        slug: 'privacy-policy',
-        title: '개인정보 처리방침 변경 안내',
-        excerpt: '개인정보보호법 개정에 따른 처리방침 변경사항을 안내드립니다.',
-        date: '2024-02-01',
-        category: '정책'
+  // Front Matter를 파싱하는 함수
+  const parseFrontMatter = (content) => {
+    const frontMatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/
+    const match = content.match(frontMatterRegex)
+    
+    if (!match) {
+      return { frontMatter: {}, content }
+    }
+    
+    const [, yamlContent, markdownContent] = match
+    const frontMatter = {}
+    
+    // 간단한 YAML 파싱 (key: "value" 형태)
+    yamlContent.split('\n').forEach(line => {
+      const colonIndex = line.indexOf(':')
+      if (colonIndex > 0) {
+        const key = line.substring(0, colonIndex).trim()
+        const value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '')
+        frontMatter[key] = value
       }
-    ]
+    })
+    
+    return { frontMatter, content: markdownContent }
+  }
 
-    // 로딩 시뮬레이션
-    setTimeout(() => {
-      setNotices(mockNotices)
-      setLoading(false)
-    }, 500)
+  useEffect(() => {
+    const loadNotices = async () => {
+      try {
+        setLoading(true)
+        
+        // 빌드 시 생성된 파일 목록 가져오기
+        let noticeFiles = []
+        
+        try {
+          const fileListResponse = await fetch('/data/notice-files.json')
+          if (fileListResponse.ok) {
+            const fileListData = await fileListResponse.json()
+            noticeFiles = fileListData.notices || []
+            console.log('📂 빌드 시 생성된 파일 목록:', noticeFiles)
+          } else {
+            throw new Error('파일 목록을 불러올 수 없습니다.')
+          }
+        } catch (error) {
+          // 빌드 시 생성된 파일이 없으면 기본 목록 사용
+          console.warn('빌드된 파일 목록이 없어 기본 목록 사용:', error.message)
+          noticeFiles = [
+            'system-maintenance',
+            'new-features', 
+            'privacy-policy'
+          ]
+        }
+        
+        // 각 파일에서 프론트매터 추출
+        const frontMatterList = []
+        const noticeList = []
+        
+        for (const fileName of noticeFiles) {
+          try {
+            const response = await fetch(`/markdown/notice/${fileName}.md`)
+            if (!response.ok) {
+              console.warn(`파일을 불러올 수 없습니다: ${fileName}`)
+              continue
+            }
+            
+            const content = await response.text()
+            const { frontMatter } = parseFrontMatter(content)
+            
+            // 프론트매터 리스트에 추가
+            frontMatterList.push({
+              fileName,
+              ...frontMatter
+            })
+            
+            // 게시글 리스트 생성
+            const notice = {
+              slug: fileName,
+              title: frontMatter.title || '제목 없음',
+              excerpt: frontMatter.excerpt || '내용이 없습니다.',
+              date: frontMatter.date || '날짜 없음',
+              category: frontMatter.category || '일반'
+            }
+            
+            noticeList.push(notice)
+          } catch (err) {
+            console.error(`파일 로딩 실패: ${fileName}`, err)
+          }
+        }
+        
+        // 프론트매터 상태 업데이트
+        setFrontMatters(frontMatterList)
+        
+        // 날짜순으로 정렬하여 게시글 상태 업데이트
+        const sortedNotices = noticeList.sort((a, b) => new Date(b.date) - new Date(a.date))
+        setNotices(sortedNotices)
+        
+      } catch (err) {
+        console.error('공지사항 로딩 실패:', err)
+        setNotices([])
+        setFrontMatters([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadNotices()
   }, [])
 
   if (loading) {
@@ -67,11 +141,18 @@ const Notice = () => {
                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                   notice.category === '시스템' ? 'bg-red-100 text-red-800' :
                   notice.category === '업데이트' ? 'bg-blue-100 text-blue-800' :
+                  notice.category === '정책' ? 'bg-gray-100 text-gray-800' :
                   'bg-green-100 text-green-800'
                 }`}>
                   {notice.category}
                 </span>
-                <time className="text-sm text-gray-500">{notice.date}</time>
+                <time className="text-sm text-gray-500">
+                  {new Date(notice.date).toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit', 
+                    day: '2-digit'
+                  })}
+                </time>
               </div>
             </div>
             
