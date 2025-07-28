@@ -67,6 +67,7 @@ const generateMarkdownFileList = () => {
 }
 
 export default defineConfig({
+  base: '/mySWJ/', // GitHub Pages의 repository 이름에 맞게 설정
   plugins: [
     tailwindcss(),
     react(),
