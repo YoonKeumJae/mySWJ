@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import ReactMarkdown from 'react-markdown'
+import Markdown from './Markdown'
 
 const AboutHistory = () => {
   const [content, setContent] = useState('')
@@ -48,7 +48,7 @@ const AboutHistory = () => {
   return (
     <article className="max-w-4xl mx-auto">
       <div className="prose prose-lg max-w-none prose-headings:text-gray-800 prose-p:text-gray-600">
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <Markdown>{content}</Markdown>
       </div>
     </article>
   )
