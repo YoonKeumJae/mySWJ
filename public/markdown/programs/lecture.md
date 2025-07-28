@@ -1,8 +1,13 @@
 # 강의 프로그램
 
+![강의실 전경](/images/programs/lecture-room.jpg "쾌적한 강의실 환경")
+
 ## 🎓 교육 과정 소개
 
 다양한 연령대와 수준에 맞춘 전문 강의 프로그램을 제공합니다.
+
+![강의 진행 모습](/images/programs/lecture-scene.jpg)
+*전문 강사진의 체계적인 강의*
 
 ### 프로그램 특징
 
