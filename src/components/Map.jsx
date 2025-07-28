@@ -49,14 +49,22 @@ const MapPage = () => {
 
   const location = { lat: 35.846239, lng: 128.595696 };
 
+  // 환경 변수에서 Google Maps 설정 가져오기
+  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+  const googleMapsMapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID
+
+  if (!googleMapsApiKey) {
+    console.error('Google Maps API 키가 설정되지 않았습니다. .env 파일을 확인하세요.')
+  }
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="mb-8 bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-        <APIProvider apiKey={'AIzaSyAHsSkpAlmj1TPLUyIRASxXEYo-04WAUy8'} onLoad={() => console.log('Maps API has loaded.')}>
+        <APIProvider apiKey={googleMapsApiKey} onLoad={() => console.log('Maps API has loaded.')}>
             <Map
                 defaultZoom={13}
                 defaultCenter={ location }
-                mapId={'9b0b608a739877ad1c7022ca'}
+                mapId={googleMapsMapId}
                 >
                 <AdvancedMarker position={location}>
                     <Pin></Pin>
