@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
+import { getAssetUrl } from '../utils/assets'
 
 const Navigation = () => {
   const location = useLocation()
@@ -19,7 +20,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link to="/" className="text-xl font-bold text-gray-800 hover:text-blue-600">
-            <img src='/sowoojoo.png' alt='sowoojoo logo' className="h-10"></img>
+            <img src={getAssetUrl('/sowoojoo.png')} alt='sowoojoo logo' className="h-10"></img>
           </Link>
           
           <div className="hidden md:flex space-x-8">
