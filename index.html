@@ -51,7 +51,49 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- 로딩 중 표시 -->
+      <div id="initial-loader" style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+        <div style="text-align: center;">
+          <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 0 auto 20px;"></div>
+          <p>소우주 로딩 중...</p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    </div>
+    
+    <!-- 에러 처리 스크립트 -->
+    <script>
+      // 5초 후에도 로딩이 끝나지 않으면 에러 메시지 표시
+      setTimeout(function() {
+        const loader = document.getElementById('initial-loader');
+        if (loader && loader.style.display !== 'none') {
+          loader.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+              <h2 style="color: #e74c3c; margin-bottom: 20px;">사이트 로딩 중 문제가 발생했습니다</h2>
+              <p style="margin-bottom: 20px;">페이지를 새로고침해 주세요.</p>
+              <button onclick="window.location.reload()" style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                새로고침
+              </button>
+              <div style="margin-top: 20px; font-size: 12px; color: #666;">
+                문제가 지속되면 브라우저 콘솔(F12)을 확인해 주세요.
+              </div>
+            </div>
+          `;
+        }
+      }, 5000);
+      
+      // React 앱이 로드되면 로더 숨기기
+      window.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM이 로드되었습니다.');
+      });
+    </script>
+    
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

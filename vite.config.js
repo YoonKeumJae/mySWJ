@@ -67,7 +67,7 @@ const generateMarkdownFileList = () => {
 }
 
 export default defineConfig({
-  base: '/', // SEO를 위해 루트 경로로 변경
+  base: './', // 상대 경로로 변경 (배포 환경 호환성 향상)
   plugins: [
     tailwindcss(),
     react(),
@@ -83,15 +83,25 @@ export default defineConfig({
         }
       }
     },
-    // 소스맵 생성 (디버깅용)
-    sourcemap: false,
+    // 소스맵 생성 (디버깅용 - 배포 시에는 true로 설정하여 에러 추적)
+    sourcemap: true,
     // 최적화
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        drop_console: false, // 배포 시 콘솔 로그 유지 (디버깅용)
         drop_debugger: true
       }
     }
+  },
+  // 개발 서버 설정
+  server: {
+    port: 5173,
+    host: true
+  },
+  // 미리보기 서버 설정  
+  preview: {
+    port: 4173,
+    host: true
   }
 })

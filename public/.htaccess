@@ -75,6 +75,10 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
+    # HTTPS 리다이렉션
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
     # Handle Angular and React requests
     RewriteBase /
     RewriteRule ^index\.html$ - [L]
@@ -83,6 +87,11 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     RewriteRule . /index.html [L]
 </IfModule>
 
-# MIME 타입 설정
-AddType application/javascript .js
-AddType text/css .css
+# MIME 타입 설정 (중요!)
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType application/json .json
+    AddType image/svg+xml .svg
+    AddType image/webp .webp
+</IfModule>
