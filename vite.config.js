@@ -67,10 +67,31 @@ const generateMarkdownFileList = () => {
 }
 
 export default defineConfig({
-  base: '/mySWJ/', // GitHub Pages의 repository 이름에 맞게 설정
+  base: '/', // SEO를 위해 루트 경로로 변경
   plugins: [
     tailwindcss(),
     react(),
     generateMarkdownFileList()
   ],
+  build: {
+    // SEO 최적화를 위한 빌드 설정
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          utils: ['react-markdown']
+        }
+      }
+    },
+    // 소스맵 생성 (디버깅용)
+    sourcemap: false,
+    // 최적화
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
+  }
 })

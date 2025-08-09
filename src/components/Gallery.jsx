@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getAssetUrl } from '../utils/assets'
+import { updatePageSEO, seoData } from '../utils/seo'
 
 const Gallery = () => {
   const [galleries, setGalleries] = useState([])
@@ -33,6 +34,14 @@ const Gallery = () => {
   }
 
   useEffect(() => {
+    // SEO 설정
+    updatePageSEO(
+      seoData.gallery.title,
+      seoData.gallery.description,
+      seoData.gallery.keywords,
+      '/gallery'
+    )
+
     const loadGalleries = async () => {
       try {
         setLoading(true)

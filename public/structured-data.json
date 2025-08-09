@@ -1,0 +1,70 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "소우주 성문화 인권센터",
+  "alternateName": "소우주",
+  "url": "https://sowoojoo.org",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://sowoojoo.org/sowoojoo.png"
+  },
+  "description": "성평등과 인권 증진을 위한 전문기관으로, 성교육, 상담, 연구 활동을 통해 건강한 성문화를 만들어 갑니다.",
+  "foundingDate": "2020",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "KR",
+    "addressRegion": "서울특별시"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "availableLanguage": "Korean"
+  },
+  "sameAs": [
+    "https://www.instagram.com/sowoojoo",
+    "https://www.facebook.com/sowoojoo"
+  ],
+  "knowsAbout": [
+    "성교육",
+    "성평등",
+    "인권",
+    "성문화",
+    "상담",
+    "워크샵",
+    "교육프로그램"
+  ],
+  "areaServed": {
+    "@type": "Country",
+    "name": "대한민국"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "성교육 프로그램",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "성교육 강의",
+          "description": "체계적이고 과학적인 성교육 강의 프로그램"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "체험활동 프로그램",
+          "description": "참여형 체험활동을 통한 성교육"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "인형극 프로그램",
+          "description": "어린이와 청소년을 위한 인형극 성교육"
+        }
+      }
+    ]
+  }
+}
