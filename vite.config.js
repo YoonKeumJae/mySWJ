@@ -85,14 +85,8 @@ export default defineConfig({
     },
     // 소스맵 생성 (디버깅용 - 배포 시에는 true로 설정하여 에러 추적)
     sourcemap: true,
-    // 최적화
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: false, // 배포 시 콘솔 로그 유지 (디버깅용)
-        drop_debugger: true
-      }
-    }
+    // 최적화 - Vite v5 호환 설정
+    minify: 'terser'
   },
   // 개발 서버 설정
   server: {
