@@ -68,7 +68,8 @@ const Home = () => {
         </h1> */}
         <img src={getAssetUrl('/sowoojoo.png')} alt='sowoojoo logo' className='h-30'></img>
         <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          소중한 우리 몸의 주인은 바로 나! 소우주에 오신 것을 환영합니다. 
+          소중한 우리 몸의 주인은 바로 나! 소우주에 오신 것을 환영합니다. <br/>
+          지금은 사이트 공사중입니다. 나중에 다시 만나요!
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link 
