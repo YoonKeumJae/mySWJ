@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Markdown from './Markdown';
 import {APIProvider, Map, AdvancedMarker, Pin} from '@vis.gl/react-google-maps';
 import { getAssetUrl } from '../utils/assets'
+import { updatePageSEO, seoData } from '../utils/seo'
 
 
 const MapPage = () => {
@@ -10,6 +11,14 @@ const MapPage = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    // SEO 설정
+    updatePageSEO(
+      seoData.map.title,
+      seoData.map.description,
+      seoData.map.keywords,
+      '/map'
+    )
+
     const loadMarkdownFile = async () => {
       try {
         setLoading(true)

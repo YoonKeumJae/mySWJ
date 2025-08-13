@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Markdown from './Markdown'
 import { getAssetUrl } from '../utils/assets'
+import { updatePageSEO, seoData } from '../utils/seo'
 
 const AboutInfo = () => {
   const [content, setContent] = useState('')
@@ -8,6 +9,14 @@ const AboutInfo = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    // SEO 설정
+    updatePageSEO(
+      seoData.aboutInfo.title,
+      seoData.aboutInfo.description,
+      seoData.aboutInfo.keywords,
+      '/about/info'
+    )
+
     const loadMarkdownFile = async () => {
       try {
         setLoading(true)

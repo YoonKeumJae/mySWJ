@@ -67,10 +67,35 @@ const generateMarkdownFileList = () => {
 }
 
 export default defineConfig({
-  base: '/mySWJ/', // GitHub Pages의 repository 이름에 맞게 설정
+  base: './', // 상대 경로로 변경 (배포 환경 호환성 향상)
   plugins: [
     tailwindcss(),
     react(),
     generateMarkdownFileList()
   ],
+  build: {
+    // SEO 최적화를 위한 빌드 설정
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          utils: ['react-markdown']
+        }
+      }
+    },
+    // 소스맵 생성 (디버깅용 - 배포 시에는 true로 설정하여 에러 추적)
+    sourcemap: true,
+    // 최적화 - Vite v5 호환 설정
+    minify: 'terser'
+  },
+  // 개발 서버 설정
+  server: {
+    port: 5173,
+    host: true
+  },
+  // 미리보기 서버 설정  
+  preview: {
+    port: 4173,
+    host: true
+  }
 })

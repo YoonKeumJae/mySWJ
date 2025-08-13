@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getAssetUrl } from '../utils/assets'
+import { updatePageSEO, seoData } from '../utils/seo'
 
 const Notice = () => {
   const [notices, setNotices] = useState([])
@@ -33,6 +34,14 @@ const Notice = () => {
   }
 
   useEffect(() => {
+    // SEO 설정
+    updatePageSEO(
+      seoData.notice.title,
+      seoData.notice.description,
+      seoData.notice.keywords,
+      '/notice'
+    )
+
     const loadNotices = async () => {
       try {
         setLoading(true)

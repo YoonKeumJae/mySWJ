@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getAssetUrl } from '../utils/assets'
+import { updatePageSEO, seoData, createStructuredData } from '../utils/seo'
 
 const Home = () => {
   const [notices, setNotices] = useState([])
@@ -9,6 +10,27 @@ const Home = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    // SEO 설정
+    updatePageSEO(
+      seoData.home.title,
+      seoData.home.description,
+      seoData.home.keywords,
+      '/'
+    )
+
+    // 구조화된 데이터 설정
+    createStructuredData('Organization', {
+      "name": "소우주 성문화 인권센터",
+      "alternateName": "소우주",
+      "url": "https://sowoojoo.org",
+      "logo": "https://sowoojoo.org/sowoojoo.png",
+      "description": "성평등과 인권 증진을 위한 전문기관",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "KR"
+      }
+    })
+
     const loadContentData = async () => {
       try {
         setLoading(true)
