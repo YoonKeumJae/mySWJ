@@ -86,30 +86,37 @@ const Home = () => {
       {/* 메인 히어로 섹션 */}
       <section className="text-center py-16 flex flex-col items-center">
         {/* <h1 className="text-5xl font-bold text-gray-800 mb-6">
-          소우주에 오신 것을 환영합니다
-        </h1> */}
-        <img src={getAssetUrl('/sowoojoo.png')} alt='sowoojoo logo' className='h-30'></img>
-        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          소중한 우리 몸의 주인은 바로 나! 소우주에 오신 것을 환영합니다. <br/>
-          지금은 사이트 공사중입니다. 나중에 다시 만나요!
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link 
-            to="/programs/lecture"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-          >
-            프로그램 보기
-          </Link>
-          <Link 
-            to="/gallery"
-            className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-          >
-            갤러리 둘러보기
-          </Link>
-        </div>
-      </section>
+              소우주에 오신 것을 환영합니다
+            </h1> */}
+            <img src={getAssetUrl('/sowoojoo.png')} alt='sowoojoo logo' className='h-30'></img>
+            <p className="text-2xl md:text-3xl font-extrabold text-red-400 mb-6 max-w-3xl mx-auto">
+              소중한 우리 몸의 주인은 바로 나! 소우주에 오신 것을 환영합니다. <br/>
+              지금은 사이트 공사중입니다. 나중에 다시 만나요!
+            </p>
+            <div className="text-center mb-8">
+              <p className="text-lg md:text-xl font-semibold text-gray-700">문의사항은 아래로 연락주십시오</p>
+              <div className="mt-2 flex flex-col items-center gap-1 text-gray-700">
+              <a href="tel:0536530057" className="hover:text-blue-600">053 653 0057</a>
+              <a href="mailto:swjcenter@hanmail.net" className="hover:text-blue-600">swjcenter@hanmail.net</a>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link 
+              to="/programs/lecture"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+              >
+              프로그램 보기
+              </Link>
+              <Link 
+              to="/gallery"
+              className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              >
+              갤러리 둘러보기
+              </Link>
+            </div>
+            </section>
 
-      {/* 주요 프로그램 섹션 */}
+            {/* 주요 프로그램 섹션 */}
       <section className="grid md:grid-cols-3 gap-8 py-16">
         {/* 강의 프로그램 카드 */}
         <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
